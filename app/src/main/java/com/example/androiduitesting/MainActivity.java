@@ -2,6 +2,7 @@ package com.example.androiduitesting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent; // ⬅️ add this
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -37,9 +38,15 @@ public class MainActivity extends AppCompatActivity {
         //dataList.addAll(Arrays.asList(cities));
 
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
-
-
         cityList.setAdapter(cityAdapter);
+
+        // ⬇️ NEW: open ShowActivity when a city is tapped
+        cityList.setOnItemClickListener((parent, view, position, id) -> {
+            String cityName = dataList.get(position);
+            Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+            intent.putExtra("city_name", cityName);
+            startActivity(intent);
+        });
 
         final Button addButton = findViewById(R.id.button_add);
         addButton.setOnClickListener(new View.OnClickListener() {
